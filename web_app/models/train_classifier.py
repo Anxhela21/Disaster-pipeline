@@ -22,15 +22,6 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 
 
-# def load_data(database_filepath):
-#     engine = create_engine('sqlite:///'+database_filepath)
-#     df = pd.read_sql_table(database_filepath, engine)
-#     X = df['message']
-#     y = df.iloc[:, 4:]
-#     category_names = list(df.columns[4:]) 
-#     return X, y, category_names
-
-
 def load_data(database_filepath):
     
     engine = create_engine("sqlite:///%s"%database_filepath)
@@ -45,7 +36,7 @@ def load_data(database_filepath):
 
     
     
-     #This is the tokenizing stage in the pipeline 
+ #This is the tokenizing stage in the pipeline 
 def tokenize(text):
     
     stop_words = stopwords.words("english")
@@ -57,6 +48,7 @@ def tokenize(text):
     words = word_tokenize(text)
     
     lemmatizer = WordNetLemmatizer()
+    
     # lemmatize and remove stop words
     words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
 
@@ -78,11 +70,11 @@ def build_model():
                         ('clf', MultiOutputClassifier(RandomForestClassifier()))
                         ])
 
-#     parameters = {'clf__estimator__n_estimators': [50, 100],
-#                   'clf__estimator__min_samples_split': [2, 3, 4],
-#                   'clf__estimator__criterion': ['entropy', 'gini']
-#                  }
-#     cv = GridSearchCV(pipeline, param_grid=parameters)
+    parameters = {'clf__estimator__n_estimators': [50, 100],
+                  'clf__estimator__min_samples_split': [2, 3, 4],
+                  'clf__estimator__criterion': ['entropy', 'gini']
+                 }
+    cv = GridSearchCV(pipeline, param_grid=parameters)
     
     return pipeline
 

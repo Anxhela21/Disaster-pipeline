@@ -1,10 +1,9 @@
 #Process DATA:
 
-
-import sys
 # import libraries
 import pandas as pd
 from sqlalchemy import create_engine
+import sys
 
 
 
@@ -18,18 +17,22 @@ def load_data(messages_filepath, categories_filepath):
 
 def clean_data(df):
     categories = df['categories'].str.split(';',expand=True)
+
     # select the first row of the categories dataframe
     row = categories.iloc[[1]]
+
     # use this row to extract a list of new column names for categories.
     category_colnames = [x.split('-')[0] for x in row.values[0]]
     categories.columns = category_colnames
     for column in categories:
+
         # set each value to be the last character of the string
         categories[column] = categories[column].astype(str).str[-1:]
 
     # convert column from string to numeric
     categories[column] = categories[column].astype(int)
     df.drop(['categories'], axis=1, inplace=True)
+
     # concatenate the original dataframe with the new `categories` dataframe
     df = pd.concat([df, categories], join='inner', axis=1)
     df.drop_duplicates(inplace=True)
@@ -40,9 +43,7 @@ def save_data(df, database_filename):
     engine = create_engine('sqlite:///'+database_filename)
     df.to_sql('Disaster', engine, index=False)  
 
-# engine = create_engine('sqlite:///disaster_response.db')
-# df.to_sql('DisasterMessages', engine, index=False)    
-    
+
     
 
 def main():
