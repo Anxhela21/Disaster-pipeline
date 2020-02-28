@@ -6,5 +6,5 @@ This project was focused around building a data dashboard that users can input a
 This app is using Flask framework and run on Heroku.
 
 
-Licensing, Acknowledgements
+# Licensing, Acknowledgements #
 Credit to Udacity for the starter codes and FigureEight for provding the data used by this project.
